@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Uma Mensagem Para Você</title>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #111;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .container {
+      max-width: 400px;
+      padding: 24px;
+      text-align: center;
+      background: #1c1c1c;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+
+    .frase {
+      font-size: 1.4rem;
+      font-weight: bold;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    .versiculo {
+      font-size: 1rem;
+      opacity: 0.8;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="frase" id="frase"></div>
+    <div class="versiculo" id="versiculo"></div>
+    <div class="aplicacao" id="aplicacao"></div>
+  </div>
+
+<script>
+  const mensagens = [
+  {
+    frase: "Portanto, arrependam-se e se convertam para que os seus pecados sejam apagados, para que venham tempos de refrigério da parte do Senhor.",
+    versiculo: "Atos 3:19"
+  },
+  {
+    frase: "Daí em diante Jesus começou a pregar e a dizer: “Arrependam-se, porque está próximo o Reino dos Céus.”",
+    versiculo: "Mateus 4:17"
+  },
+  {
+    frase: "Não! Eu lhes digo que, se não se arrependerem, todos igualmente perecerão.",
+    versiculo: "Lucas 13:3"
+  },
+  {
+    frase: "Eu afirmo a vocês que, da mesma forma, haverá mais alegria no céu por um pecador que se arrepende do que por noventa e nove justos que não precisam de arrependimento.",
+    versiculo: "Lucas 15:7"
+  },
+  {
+    frase: "Se o meu povo, que se chama pelo meu nome, se humilhar, orar, buscar a minha face e se afastar dos seus maus caminhos, então eu ouvirei dos céus, perdoarei os seus pecados e sararei a sua terra.",
+    versiculo: "2 Crônicas 7:14"
+  },
+  {
+    frase: "Que o ímpio abandone o seu caminho, e o homem mau, os seus pensamentos; e se converta ao Senhor, que se compadecerá dele; volte-se para o nosso Deus, porque é rico em perdoar.",
+    versiculo: "Isaías 55:7"
+  },
+  {
+    frase: "Portanto, eu os julgarei, cada um segundo as suas obras, ó casa de Israel, diz o Senhor Deus. Convertei-vos e afastem-se de todas as suas transgressões, para que a iniquidade não seja a causa da sua ruína.",
+    versiculo: "Ezequiel 18:30"
+  },
+  {
+    frase: "Porque não tenho prazer na morte de ninguém, diz o Senhor Deus. Portanto, convertam-se e vivam.",
+    versiculo: "Ezequiel 18:32"
+  },
+  {
+    frase: "Rasguem o coração e não as roupas. Converta-se ao Senhor, seu Deus, porque ele é misericordioso e compassivo, tardio em irar-se e grande em amor, e se arrepende do mal.",
+    versiculo: "Joel 2:13"
+  },
+  {
+    frase: "O que encobre as suas transgressões jamais prosperará, mas o que as confessa e deixa alcançará misericórdia.",
+    versiculo: "Provérbios 28:13"
+  },
+  {
+    frase: "Deus não levou em conta os tempos da ignorância, mas agora ordena que todos, em todos os lugares, se arrependam.",
+    versiculo: "Atos 17:30"
+  },
+  {
+    frase: "Ou será que você despreza a riqueza da bondade, da tolerância e da paciência de Deus, ignorando que a bondade de Deus é que o leva ao arrependimento?",
+    versiculo: "Romanos 2:4"
+  },
+  {
+    frase: "O Senhor não demora a cumprir a sua promessa, como alguns julgam demorada; pelo contrário, ele é paciente com vocês, não querendo que ninguém pereça, mas que todos cheguem ao arrependimento.",
+    versiculo: "2 Pedro 3:9"
+  },
+  {
+    frase: "Eu repreendo e disciplino aqueles que amo. Portanto, seja zeloso e arrependa-se.",
+    versiculo: "Apocalipse 3:19"
+  },
+  {
+    frase: "O tempo está cumprido, e o Reino de Deus está próximo; arrependam-se e creiam no evangelho.",
+    versiculo: "Marcos 1:15"
+  }
+];
+
+  function mostrarMensagemSemRepetir() {
+    let indicesUsados = JSON.parse(localStorage.getItem("indicesUsados")) || [];
+
+    // Se todas já foram exibidas, reseta
+    if (indicesUsados.length === mensagens.length) {
+      indicesUsados = [];
+    }
+
+    // Filtra mensagens ainda não usadas
+    const indicesDisponiveis = mensagens
+      .map((_, i) => i)
+      .filter(i => !indicesUsados.includes(i));
+
+    // Sorteia uma das disponíveis
+    const indexSorteado =
+      indicesDisponiveis[Math.floor(Math.random() * indicesDisponiveis.length)];
+
+    indicesUsados.push(indexSorteado);
+    localStorage.setItem("indicesUsados", JSON.stringify(indicesUsados));
+
+    const msg = mensagens[indexSorteado];
+
+    document.getElementById("frase").textContent = msg.frase;
+
+    const versiculoEl = document.getElementById("versiculo");
+    const aplicacaoEl = document.getElementById("aplicacao");
+
+    if (msg.versiculo) {
+      versiculoEl.textContent = msg.versiculo;
+      versiculoEl.style.display = "block";
+    } else {
+      versiculoEl.style.display = "none";
+    }
+
+    if (msg.aplicacao) {
+      aplicacaoEl.textContent = msg.aplicacao;
+      aplicacaoEl.style.display = "block";
+    } else {
+      aplicacaoEl.style.display = "none";
+    }
+  }
+
+  // Executa ao carregar a página
+  mostrarMensagemSemRepetir();
+</script>
+
+
+</body>
+</html>
